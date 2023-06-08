@@ -51,7 +51,7 @@ function Main() {
         setTranslation("");
       }
     }, 500);
-    
+
     if(userText === "") {
       setDictionaryData([]);
     }
@@ -180,12 +180,6 @@ function Main() {
                   className="tooltip"
                   openOnClick={true}
                   delayHide={700}
-                />
-                <ReactTooltip
-                  anchorId="copy-clipboard"
-                  place="bottom"
-                  content="Copy(Option + C)"
-                  className="tooltip"
                 />
               </div>
             )}
