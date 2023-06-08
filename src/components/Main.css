@@ -100,3 +100,7 @@
   .icon-element:hover{
     cursor: pointer;
   }
+
+  .tooltip {
+    font-size: 10px;
+  }

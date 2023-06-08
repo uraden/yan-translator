@@ -51,8 +51,13 @@ function Main() {
         setTranslation("");
       }
     }, 500);
+    
+    if(userText === "") {
+      setDictionaryData([]);
+    }
 
     return () => clearTimeout(delayDebounceFn);
+
   }, [userText, fromLanguage, toLanguage]);
 
   const translateText = async () => {
