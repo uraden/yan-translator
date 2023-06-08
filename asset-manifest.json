@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/yan-translator/static/css/main.49daefac.css",
-    "main.js": "/yan-translator/static/js/main.289af2e2.js",
+    "main.css": "/yan-translator/static/css/main.3b69dc64.css",
+    "main.js": "/yan-translator/static/js/main.b45cfbc8.js",
     "static/js/787.bcea1e29.chunk.js": "/yan-translator/static/js/787.bcea1e29.chunk.js",
     "static/media/fa-solid-900.ttf": "/yan-translator/static/media/fa-solid-900.4a2cd718d7031b732e76.ttf",
     "static/media/fa-brands-400.ttf": "/yan-translator/static/media/fa-brands-400.150de8eaa454d669c405.ttf",
@@ -12,12 +12,12 @@
     "static/media/fa-v4compatibility.ttf": "/yan-translator/static/media/fa-v4compatibility.0e3a648be390bd8cb094.ttf",
     "static/media/fa-v4compatibility.woff2": "/yan-translator/static/media/fa-v4compatibility.68577e40f3e70067b5da.woff2",
     "index.html": "/yan-translator/index.html",
-    "main.49daefac.css.map": "/yan-translator/static/css/main.49daefac.css.map",
-    "main.289af2e2.js.map": "/yan-translator/static/js/main.289af2e2.js.map",
+    "main.3b69dc64.css.map": "/yan-translator/static/css/main.3b69dc64.css.map",
+    "main.b45cfbc8.js.map": "/yan-translator/static/js/main.b45cfbc8.js.map",
     "787.bcea1e29.chunk.js.map": "/yan-translator/static/js/787.bcea1e29.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.49daefac.css",
-    "static/js/main.289af2e2.js"
+    "static/css/main.3b69dc64.css",
+    "static/js/main.b45cfbc8.js"
   ]
 }
