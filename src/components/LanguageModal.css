@@ -1,0 +1,23 @@
+.three-column-modal {
+    width: 800px;
+  }
+  
+  .three-column-div {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  
+  .language-option {
+    cursor: pointer;
+  }
+  
+  .language-option:hover {
+    cursor: pointer;
+    background-color: #bab9b9;
+  }
+
+  .search-bar-language {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
