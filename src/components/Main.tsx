@@ -19,6 +19,7 @@ function Main() {
   const [translation, setTranslation] = useState("");
   const [isCopied, setIsCopied] = useState(false);
   const [dictionaryData, setDictionaryData] = useState([]);
+  const [recentlySearchedWords, setRecentlySearchedWords] = useState<string[]>([]);
 
   const [showModalTo, setShowModalTo] = useState(false);
   const [showModalFrom, setShowModalFrom] = useState(false);
@@ -42,15 +43,16 @@ function Main() {
       if (userText) {
         translateText();
         dictionaryTextTranslate();
+        setRecentlySearchedWords([...recentlySearchedWords, userText]);
       } else if (userText === "") {
         setTranslation("");
       }
-    }, 500);
+    }, 1000);
 
     if(userText === "") {
       setDictionaryData([]);
     }
-
+    
     return () => clearTimeout(delayDebounceFn);
 
   }, [userText, fromLanguage, toLanguage]);
@@ -173,7 +175,10 @@ function Main() {
         </div>
       </div>
       {dictionaryData?.length > 0 && (
-        <Dictionary dictionaryData={dictionaryData} />
+        <Dictionary 
+          dictionaryData={dictionaryData} 
+          recentlySearchedWords={recentlySearchedWords}
+        />
       )}
     </div>
   );

@@ -4,19 +4,13 @@
     display: flex;
     margin-top: 45px;
     align-content: flex-start;
+    justify-content: space-between;
   }
   
-  .row-alter {
-    width: 50%;
-  }
-  
-  .row-dictionary {
+  .recently-searched-words {
+    width: 45%;
     display: flex;
-    width: 50%;
-    flex-direction: column;
-    justify-content: flex-start;
     flex-wrap: wrap;
-    align-items: flex-start
   }
   
   .list-of-words {

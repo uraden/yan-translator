@@ -3,12 +3,14 @@ import "./Dictionary.css";
 
 interface DictionaryProps {
   dictionaryData: Array<any>;
+  recentlySearchedWords: Array<string>;
 }
 
-const Dictionary: React.FC<DictionaryProps> = ({ dictionaryData }) => {
+const Dictionary: React.FC<DictionaryProps> = ({ dictionaryData, recentlySearchedWords }) => {
   return (
     <div className="container-dictionary">
-      <div className="row-alter"></div>
+      <div className="recently-searched-words">
+      </div>
       <div className="row-dictionary">
         <div>
           <h3>Dictionary</h3>
