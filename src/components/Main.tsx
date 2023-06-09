@@ -19,23 +19,17 @@ function Main() {
   const [isCopied, setIsCopied] = useState(false);
   const [dictionaryData, setDictionaryData] = useState([]);
 
-  const fromLanguageRef = useRef<HTMLDivElement>(null);
-
   const [showModalTo, setShowModalTo] = useState(false);
   const [showModalFrom, setShowModalFrom] = useState(false);
 
   const toggleShowFrom = () => setShowModalFrom(!showModalFrom);
   const toggleShowTo = () => setShowModalTo(!showModalTo);
 
-  const onSelectFromLanguage = (language: string) => {
-    setFromLanguage(Object.values(language)[0]);
-    setFromLanguageText(Object.keys(language)[0]);
+  const onSelectFromLanguage = () => {
     setShowModalFrom(false);
   };
 
-  const onSelectToLanguage = (language: string) => {
-    setToLanguage(Object.values(language)[0]);
-    setToLanguageText(Object.keys(language)[0]);
+  const onSelectToLanguage = () => {
     setShowModalTo(false);
   };
 
@@ -97,24 +91,7 @@ function Main() {
     setFromLanguageText(toLanguageText);
     setToLanguageText(fromLanguageText);
     setTranslation(userText);
-    setUserText((prevUserText) => {
-      setTranslation(prevUserText);
-      return translation;
-    });
-  };
-  
-  const handleFromLanguageInput = () => {
-    if (fromLanguageRef.current) {
-      const textContent = fromLanguageRef.current.textContent || "";
-      setUserText(textContent);
-      const element = fromLanguageRef.current;
-      const selection = window.getSelection();
-      const range = document.createRange();
-      range.selectNodeContents(element);
-      range.collapse(false);
-      selection?.removeAllRanges();
-      selection?.addRange(range);
-    }
+    setUserText(translation);
   };
 
   return (
@@ -125,7 +102,7 @@ function Main() {
             {fromLanguageText ? fromLanguageText : "Select Language"}
             <LanguageModal
               onSelectLanguage={onSelectFromLanguage}
-              selectedLanguage={fromLanguage}
+              setSelectedLanguageCode={setFromLanguage}
               setSelectedLanguageText={setFromLanguageText}
               setShowModal={setShowModalFrom}
               showModal={showModalFrom}
@@ -138,7 +115,7 @@ function Main() {
             {toLanguageText ? toLanguageText : "Select Language"}
             <LanguageModal
               onSelectLanguage={onSelectToLanguage}
-              selectedLanguage={toLanguage}
+              setSelectedLanguageCode={setToLanguage}
               setSelectedLanguageText={setToLanguageText}
               setShowModal={setShowModalTo}
               showModal={showModalTo}
@@ -146,15 +123,13 @@ function Main() {
           </div>
         </div>
         <div className="row row-input-field">
-          <div
+          <textarea
+            placeholder="Type here..."
             className="column input-text input-text-from"
-            contentEditable={true}
-            data-placeholder="Translate the text here"
-            onInput={handleFromLanguageInput}
-            ref={fromLanguageRef}
+            value={userText}
+            onChange={(e) => setUserText(e.target.value)}
           >
-            {userText}
-          </div>
+          </textarea>
           
           <div className="column input-text input-text-to">
             <div>{translation}</div>
@@ -186,7 +161,7 @@ function Main() {
           </div>
         </div>
       </div>
-      {dictionaryData.length > 0 && (
+      {dictionaryData?.length > 0 && (
         <Dictionary dictionaryData={dictionaryData} />
       )}
     </div>

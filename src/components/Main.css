@@ -97,6 +97,12 @@
     outline:none;
   }
 
+  .input-text-from {
+    resize: none;
+    border: none;
+    outline: none;
+  }
+
   .icon-element:hover{
     cursor: pointer;
   }
