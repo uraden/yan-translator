@@ -7,6 +7,7 @@ import "./Main.css";
 import LanguageModal from "./LanguageModal";
 import { APIKEYS } from "../apis";
 import Dictionary from "./Dictionary";
+import { ImCross } from "react-icons/im";
 
 function Main() {
   const [fromLanguage, setFromLanguage] = useState("en");
@@ -94,6 +95,12 @@ function Main() {
     setUserText(translation);
   };
 
+  const handleClearText = () => {
+    setUserText("");
+    setTranslation("");
+    setDictionaryData([]);
+  };
+
   return (
     <div className="main-container">
       <div className="container-translate">
@@ -123,14 +130,18 @@ function Main() {
           </div>
         </div>
         <div className="row row-input-field">
+          <div className="column input-text">
           <textarea
+            className="input-text-from"
             placeholder="Type here..."
-            className="column input-text input-text-from"
             value={userText}
             onChange={(e) => setUserText(e.target.value)}
           >
           </textarea>
-          
+          <div className="icon-element-remove">
+          <ImCross size={15} onClick={() => handleClearText()} />
+          </div>
+          </div>
           <div className="column input-text input-text-to">
             <div>{translation}</div>
             {translation && (

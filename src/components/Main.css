@@ -101,6 +101,8 @@
     resize: none;
     border: none;
     outline: none;
+    width: inherit;
+    height: 240px;
   }
 
   .icon-element:hover{
@@ -109,4 +111,16 @@
 
   .tooltip {
     font-size: 10px;
+  }
+
+  .column.input-text {
+    position: relative; 
+  }
+
+  .icon-element-remove {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+    cursor: pointer;
   }
