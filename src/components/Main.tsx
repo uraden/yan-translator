@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { IoIosCopy } from "react-icons/io";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { AiOutlineSwap } from "react-icons/ai";
+import { AiOutlineSwap, AiFillDislike, AiFillLike } from "react-icons/ai";
+import { BsBookmark, BsBookmarkFill, BsShareFill } from "react-icons/bs";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import "./Main.css";
 import LanguageModal from "./LanguageModal";
@@ -19,10 +20,15 @@ function Main() {
   const [translation, setTranslation] = useState("");
   const [isCopied, setIsCopied] = useState(false);
   const [dictionaryData, setDictionaryData] = useState([]);
-  const [recentlySearchedWords, setRecentlySearchedWords] = useState<string[]>([]);
+  const [recentlySearchedWords, setRecentlySearchedWords] = useState<string[]>(
+    []
+  );
+  const [savedWords, setSavedWords] = useState<string[]>([]);
 
   const [showModalTo, setShowModalTo] = useState(false);
   const [showModalFrom, setShowModalFrom] = useState(false);
+
+  const [rateTranslationClicked, setRateTranslationClicked] = useState(null);
 
   const toggleShowFrom = () => setShowModalFrom(!showModalFrom);
   const toggleShowTo = () => setShowModalTo(!showModalTo);
@@ -37,6 +43,7 @@ function Main() {
 
   const translateAPI = `https://translate.yandex.net/api/v1.5/tr.json/translate?key=${APIKEYS.translate}&lang=${toLanguage}&text=${userText}&ui=${fromLanguage}`;
   const dictionaryAPI = `https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=${APIKEYS.dictionary}&lang=${fromLanguage}-${toLanguage}&text=${userText}`;
+  const yandexTranslateLink = `https://translate.yandex.com/en/?target_lang=${toLanguage}&source_lang=${fromLanguage}&text=${userText}`
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -49,12 +56,11 @@ function Main() {
       }
     }, 1000);
 
-    if(userText === "") {
+    if (userText === "") {
       setDictionaryData([]);
     }
-    
-    return () => clearTimeout(delayDebounceFn);
 
+    return () => clearTimeout(delayDebounceFn);
   }, [userText, fromLanguage, toLanguage]);
 
   const translateText = async () => {
@@ -80,7 +86,6 @@ function Main() {
       const data = await response.json();
       const dictionaryDataAPi = data.def;
       setDictionaryData(dictionaryDataAPi);
-      console.log("dictionary data:", dictionaryDataAPi);
     } catch (error) {
       console.log("Error occurred during translation:", error);
     }
@@ -101,6 +106,18 @@ function Main() {
     setUserText("");
     setTranslation("");
     setDictionaryData([]);
+  };
+
+  const handleSaveWord = () => {
+    setSavedWords([...savedWords, translation]);
+  };
+
+  const handleRemoveWord = () => {
+    setSavedWords(savedWords.filter((word) => word !== translation));
+  };
+
+  const handleRateTranslationClicked = (divId :any) => {
+    setRateTranslationClicked(divId === rateTranslationClicked ? null : divId);
   };
 
   return (
@@ -133,50 +150,86 @@ function Main() {
         </div>
         <div className="row row-input-field">
           <div className="column input-text">
-          <textarea
-            className="input-text-from"
-            placeholder="Type here..."
-            value={userText}
-            onChange={(e) => setUserText(e.target.value)}
-          >
-          </textarea>
-          <div className="icon-element-remove">
-          <ImCross size={15} onClick={() => handleClearText()} />
+            <textarea
+              className="input-text-from"
+              placeholder="Type here..."
+              value={userText}
+              onChange={(e) => setUserText(e.target.value)}
+            ></textarea>
+            <div className="icon-element-remove">
+              <ImCross size={15} onClick={() => handleClearText()} />
+            </div>
           </div>
-          </div>
-          <div className="column input-text input-text-to">
-            <div>{translation}</div>
-            {translation && (
-              <div id="copy-clipboard">
-                <CopyToClipboard
-                  text={translation}
-                  onCopy={() => setIsCopied(true)}
-                >
-                  <button
-                    className="copy-button"
-                    id="copy-clipboard-clicked"
-                    data-tip="Text on Hover"
-                    data-event="mouseenter"
-                  >
-                    <IoIosCopy />
-                  </button>
-                </CopyToClipboard>
-                <ReactTooltip
-                  anchorId="copy-clipboard"
-                  place="bottom"
-                  content="Translation Copied!"
-                  className="tooltip"
-                  openOnClick={true}
-                  delayHide={700}
-                />
+          <div className="column column-text-to">
+            <div className="input-text input-text-to">
+              <div>{translation}</div>
+              <div>
+                {translation && (
+                  <div id="copy-clipboard">
+                    <CopyToClipboard
+                      text={translation}
+                      onCopy={() => setIsCopied(true)}
+                    >
+                      <button
+                        className="copy-button"
+                        id="copy-clipboard-clicked"
+                        data-tip="Text on Hover"
+                        data-event="mouseenter"
+                      >
+                        <IoIosCopy />
+                      </button>
+                    </CopyToClipboard>
+                    <ReactTooltip
+                      anchorId="copy-clipboard"
+                      place="bottom"
+                      content="Translation Copied!"
+                      className="tooltip"
+                      openOnClick={true}
+                      delayHide={700}
+                    />
+                  </div>
+                )}
               </div>
-            )}
+            </div>
+            <div className="bottom-translate-icons">
+                <div className="translate-to-icon yandex-icon">Translate in <span className="yandex-link"><a href={yandexTranslateLink} target="_blank" rel="noreferrer">Yandex</a></span></div>
+                <div className="translate-to-icon bookmark-icon">
+                  {savedWords.includes(translation) ? (
+                    <BsBookmarkFill size={20} onClick={() => handleRemoveWord()}/>
+                  ) : (
+                    <BsBookmark size={20} onClick={()=>handleSaveWord()}/>
+                  )}
+                </div>
+                <div className="translate-to-icon share-icon"> 
+                <BsShareFill size={20} />
+                </div>
+                <div className="translate-to-icon rate-icon">
+                <div className={rateTranslationClicked === "div-liked" ? 'rate-icon-single-clicked icon-like-clicked' : 'rate-icon-single icon-like'} id="like-icon" onClick={()=>{handleRateTranslationClicked('div-liked')}}>
+                  <AiFillLike size={20}/>
+                  <ReactTooltip
+                      anchorId="like-icon"
+                      place="bottom"
+                      content="Good Translation"
+                      className="tooltip"
+                    />
+                  </div>
+                  <div className={rateTranslationClicked === "div-disliked" ? 'rate-icon-single-clicked icon-dislike-clicked' : 'rate-icon-single icon-dislike'} id="dislike-icon" onClick={()=>{handleRateTranslationClicked('div-disliked')}}>
+                  <AiFillDislike size={20}/>
+                  <ReactTooltip
+                      anchorId="dislike-icon"
+                      place="bottom"
+                      content="Bad Translation"
+                      className="tooltip"
+                    />
+                  </div>
+                </div>
+            </div>
           </div>
         </div>
       </div>
       {dictionaryData?.length > 0 && (
-        <Dictionary 
-          dictionaryData={dictionaryData} 
+        <Dictionary
+          dictionaryData={dictionaryData}
           recentlySearchedWords={recentlySearchedWords}
         />
       )}
