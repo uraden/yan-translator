@@ -6,9 +6,12 @@ import { BsBookmark, BsBookmarkFill, BsShareFill } from "react-icons/bs";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import "./Main.css";
 import LanguageModal from "./LanguageModal";
+import ShareModal from "./ShareModal";
 import { APIKEYS } from "../apis";
 import Dictionary from "./Dictionary";
 import { ImCross } from "react-icons/im";
+
+import { MDBPopover, MDBPopoverBody, MDBPopoverHeader } from "mdb-react-ui-kit";
 
 function Main() {
   const [fromLanguage, setFromLanguage] = useState("en");
@@ -28,10 +31,14 @@ function Main() {
   const [showModalTo, setShowModalTo] = useState(false);
   const [showModalFrom, setShowModalFrom] = useState(false);
 
+  const [showShareModal, setShowShareModal] = useState(false);
+
   const [rateTranslationClicked, setRateTranslationClicked] = useState(null);
 
   const toggleShowFrom = () => setShowModalFrom(!showModalFrom);
   const toggleShowTo = () => setShowModalTo(!showModalTo);
+
+  const toggleShowShareModal = () => setShowShareModal(!showShareModal);
 
   const onSelectFromLanguage = () => {
     setShowModalFrom(false);
@@ -43,7 +50,7 @@ function Main() {
 
   const translateAPI = `https://translate.yandex.net/api/v1.5/tr.json/translate?key=${APIKEYS.translate}&lang=${toLanguage}&text=${userText}&ui=${fromLanguage}`;
   const dictionaryAPI = `https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=${APIKEYS.dictionary}&lang=${fromLanguage}-${toLanguage}&text=${userText}`;
-  const yandexTranslateLink = `https://translate.yandex.com/en/?target_lang=${toLanguage}&source_lang=${fromLanguage}&text=${userText}`
+  const yandexTranslateLink = `https://translate.yandex.com/en/?target_lang=${toLanguage}&source_lang=${fromLanguage}&text=${userText}`;
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -116,7 +123,7 @@ function Main() {
     setSavedWords(savedWords.filter((word) => word !== translation));
   };
 
-  const handleRateTranslationClicked = (divId :any) => {
+  const handleRateTranslationClicked = (divId: any) => {
     setRateTranslationClicked(divId === rateTranslationClicked ? null : divId);
   };
 
@@ -191,39 +198,90 @@ function Main() {
                 )}
               </div>
             </div>
-            <div className="bottom-translate-icons">
-                <div className="translate-to-icon yandex-icon">Translate in <span className="yandex-link"><a href={yandexTranslateLink} target="_blank" rel="noreferrer">Yandex</a></span></div>
-                <div className="translate-to-icon bookmark-icon">
-                  {savedWords.includes(translation) ? (
-                    <BsBookmarkFill size={20} onClick={() => handleRemoveWord()}/>
-                  ) : (
-                    <BsBookmark size={20} onClick={()=>handleSaveWord()}/>
-                  )}
-                </div>
-                <div className="translate-to-icon share-icon"> 
-                <BsShareFill size={20} />
-                </div>
-                <div className="translate-to-icon rate-icon">
-                <div className={rateTranslationClicked === "div-liked" ? 'rate-icon-single-clicked icon-like-clicked' : 'rate-icon-single icon-like'} id="like-icon" onClick={()=>{handleRateTranslationClicked('div-liked')}}>
-                  <AiFillLike size={20}/>
-                  <ReactTooltip
-                      anchorId="like-icon"
-                      place="bottom"
-                      content="Good Translation"
-                      className="tooltip"
+            {translation && (
+              <div className="bottom-translate-icons">
+              <div className="translate-to-icon yandex-icon">
+                Translate in
+                <span className="yandex-link">
+                  <a
+                    href={yandexTranslateLink}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Yandex
+                  </a>
+                </span>
+              </div>
+              <div className="translate-to-icon bookmark-icon">
+                {savedWords.includes(translation) ? (
+                  <BsBookmarkFill
+                    size={20}
+                    onClick={() => handleRemoveWord()}
+                  />
+                ) : (
+                  <BsBookmark size={20} onClick={() => handleSaveWord()} />
+                )}
+              </div>
+              <div className="translate-to-icon share-icon">
+                <MDBPopover
+                  color="tertiary"
+                  btnChildren={
+                    <BsShareFill size={20} className="icon-share-btn" />
+                  }
+                  placement="bottom"
+                  dismiss
+                >
+                  <MDBPopoverBody>
+                    <ShareModal 
+                      translatedLink={yandexTranslateLink}
+                      translationText={translation}
                     />
-                  </div>
-                  <div className={rateTranslationClicked === "div-disliked" ? 'rate-icon-single-clicked icon-dislike-clicked' : 'rate-icon-single icon-dislike'} id="dislike-icon" onClick={()=>{handleRateTranslationClicked('div-disliked')}}>
-                  <AiFillDislike size={20}/>
+                  </MDBPopoverBody>
+                </MDBPopover>
+              </div>
+              <div className="translate-to-icon rate-icon">
+                <div
+                  className={
+                    rateTranslationClicked === "div-liked"
+                      ? "rate-icon-single-clicked icon-like-clicked"
+                      : "rate-icon-single icon-like"
+                  }
+                  id="like-icon"
+                  onClick={() => {
+                    handleRateTranslationClicked("div-liked");
+                  }}
+                >
+                  <AiFillLike size={20} />
                   <ReactTooltip
-                      anchorId="dislike-icon"
-                      place="bottom"
-                      content="Bad Translation"
-                      className="tooltip"
-                    />
-                  </div>
+                    anchorId="like-icon"
+                    place="bottom"
+                    content="Good Translation"
+                    className="tooltip"
+                  />
                 </div>
+                <div
+                  className={
+                    rateTranslationClicked === "div-disliked"
+                      ? "rate-icon-single-clicked icon-dislike-clicked"
+                      : "rate-icon-single icon-dislike"
+                  }
+                  id="dislike-icon"
+                  onClick={() => {
+                    handleRateTranslationClicked("div-disliked");
+                  }}
+                >
+                  <AiFillDislike size={20} />
+                  <ReactTooltip
+                    anchorId="dislike-icon"
+                    place="bottom"
+                    content="Bad Translation"
+                    className="tooltip"
+                  />
+                </div>
+              </div>
             </div>
+            )}
+            
           </div>
         </div>
       </div>
