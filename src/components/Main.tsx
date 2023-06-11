@@ -38,8 +38,6 @@ function Main() {
   const toggleShowFrom = () => setShowModalFrom(!showModalFrom);
   const toggleShowTo = () => setShowModalTo(!showModalTo);
 
-  const toggleShowShareModal = () => setShowShareModal(!showShareModal);
-
   const onSelectFromLanguage = () => {
     setShowModalFrom(false);
   };

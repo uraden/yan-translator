@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./ShareModal.css";
 import { FaTelegram, FaWhatsapp } from "react-icons/fa";
 import { AiOutlineMail } from "react-icons/ai";
