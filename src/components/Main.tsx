@@ -31,8 +31,6 @@ function Main() {
   const [showModalTo, setShowModalTo] = useState(false);
   const [showModalFrom, setShowModalFrom] = useState(false);
 
-  const [showShareModal, setShowShareModal] = useState(false);
-
   const [rateTranslationClicked, setRateTranslationClicked] = useState(null);
 
   const toggleShowFrom = () => setShowModalFrom(!showModalFrom);
