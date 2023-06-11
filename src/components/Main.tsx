@@ -11,7 +11,7 @@ import { APIKEYS } from "../apis";
 import Dictionary from "./Dictionary";
 import { ImCross } from "react-icons/im";
 
-import { MDBPopover, MDBPopoverBody, MDBPopoverHeader } from "mdb-react-ui-kit";
+import { MDBPopover, MDBPopoverBody } from "mdb-react-ui-kit";
 
 function Main() {
   const [fromLanguage, setFromLanguage] = useState("en");
